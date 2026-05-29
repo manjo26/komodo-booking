@@ -3,57 +3,84 @@
 import { useState } from "react"
 import { supabase } from "@/lib/supabase"
 
-export default function Admin() {
+export const dynamic = "force-dynamic"
 
-  const [file,setFile]=useState(null)
+export default function Admin(){
 
-  async function uploadFile(){
+const [file,setFile]=useState(null)
 
-    if(!file){
-      alert("Pilih foto dulu")
-      return
-    }
+async function uploadImage(){
 
-    const filename =
-      Date.now()+"-"+file.name
+if(!file){
 
-    const {data,error} =
-      await supabase.storage
-      .from("gallery")
-      .upload(filename,file)
+alert("Pilih foto dulu bro")
+return
 
-    if(error){
-      console.log(error)
-      alert(error.message)
-      return
-    }
+}
 
-    alert("UPLOAD BERHASIL 🔥")
-    console.log(data)
+const filename =
+Date.now()+"-"+file.name
 
-  }
+const {data,error} =
+await supabase.storage
+.from("gallery")
+.upload(filename,file)
 
-  return(
-    <main className="min-h-screen flex flex-col justify-center items-center gap-5">
+if(error){
 
-      <h1 className="text-4xl font-bold">
-        Upload Foto Trip
-      </h1>
+console.log(error)
+alert(error.message)
+return
 
-      <input
-        type="file"
-        onChange={(e)=>
-          setFile(e.target.files[0])
-        }
-      />
+}
 
-      <button
-        onClick={uploadFile}
-        className="bg-green-500 px-6 py-3 rounded-xl text-white"
-      >
-        Upload
-      </button>
+alert("UPLOAD BERHASIL 🔥")
 
-    </main>
-  )
+}
+
+return(
+
+<main className="
+min-h-screen
+flex
+justify-center
+items-center
+bg-slate-950
+text-white
+">
+
+<div className="text-center">
+
+<h1 className="text-5xl font-bold mb-10">
+
+Admin Upload
+
+</h1>
+
+<input
+type="file"
+onChange={(e)=>setFile(e.target.files[0])}
+/>
+
+<button
+onClick={uploadImage}
+className="
+bg-green-500
+px-8
+py-3
+rounded-xl
+ml-4
+"
+>
+
+Upload
+
+</button>
+
+</div>
+
+</main>
+
+)
+
 }
